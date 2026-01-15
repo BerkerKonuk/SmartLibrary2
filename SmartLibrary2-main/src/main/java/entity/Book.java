@@ -1,61 +1,46 @@
 package entity;
 
-import jakarta.persistence.*; // Hibernate 6 ve sonrası için jakarta kullanılır
+import javax.persistence.*;
 
-/*
- * Sınıf: Book
- * Amaç: Veritabanındaki 'books' tablosunu temsil eder.
- */
-@Entity // Bu sınıfın bir veritabanı tablosu olduğunu belirtir.
-@Table(name = "books") // Veritabanında tablonun adı 'books' olacak.
+@Entity
+@Table(name = "books")
 public class Book {
 
-    @Id // Tablonun Primary Key (Birincil Anahtar) alanı.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID'nin otomatik artmasını (Auto Increment) sağlar.
-    @Column(name = "id")
-    private Long id;
+    public enum Status {
+        AVAILABLE,
+        BORROWED
+    }
 
-    @Column(name = "title", nullable = false) // Boş geçilemez alan.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "author", nullable = false)
+    @Column(nullable = false)
     private String author;
 
-    @Column(name = "year")
     private int year;
 
-    // Enum tipi veritabanında metin (STRING) olarak saklansın (Örn: "AVAILABLE")
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private BookStatus status;
+    private Status status;
 
-    // --- Parametresiz Constructor (Hibernate için zorunludur) ---
     public Book() {
     }
 
-    // --- Veri girişi kolaylığı için Constructor ---
-    public Book(String title, String author, int year, BookStatus status) {
+    public Book(String title, String author, int year) {
         this.title = title;
         this.author = author;
         this.year = year;
-        this.status = status;
+        this.status = Status.AVAILABLE;
     }
 
-    // --- Enum Tanımı ---
-    public enum BookStatus {
-        AVAILABLE, // Müsait
-        BORROWED // Ödünç Verilmiş
-    }
-
-    // --- Getter ve Setter Metotları (Veriye erişim için) ---
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    // ID otomatik oluştuğu için genelde setId kullanılmaz ama Hibernate bazen
-    // ihtiyaç duyar
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -83,17 +68,16 @@ public class Book {
         this.year = year;
     }
 
-    public BookStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(BookStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    // Konsola yazdırdığımızda anlamlı çıktı almak için toString
     @Override
     public String toString() {
-        return "Kitap [ID=" + id + ", Başlık=" + title + ", Yazar=" + author + ", Durum=" + status + "]";
+        return id + ". " + title + " (" + author + ", " + year + ") - [" + status + "]";
     }
 }
