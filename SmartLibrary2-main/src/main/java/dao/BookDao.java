@@ -8,7 +8,7 @@ import java.util.List;
 
 /*
  * Sınıf: BookDao
- * Amaç: Book entity'si ile veritabanı arasındaki CRUD (Create, Read, Update, Delete) işlemlerini yönetmek.
+ * Amaç: Book entity'si ile veritabanı arasındaki CRUD (Create, Read, Update, Delete) işlemlerini yönetmek
  */
 public class BookDao {
 
